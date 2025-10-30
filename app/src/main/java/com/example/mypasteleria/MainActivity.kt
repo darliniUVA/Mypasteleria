@@ -20,9 +20,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MypasteleriaTheme {  // o MilSaboresTheme si usas el tema del proyecto
+            MypasteleriaTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {
-                    // 🔹 Aquí cargas la navegación de toda tu app
                     AppNavigation()
                 }
             }
