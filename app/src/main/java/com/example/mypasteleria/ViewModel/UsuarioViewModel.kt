@@ -32,4 +32,7 @@ class UsuarioViewModel : ViewModel() {
         _errores.value = erroresAct
         return erroresAct == UsuarioErrores()
     }
+    fun limpiarUsuario() {
+        _uiState.value = UsuarioUiState()
+    }
 }

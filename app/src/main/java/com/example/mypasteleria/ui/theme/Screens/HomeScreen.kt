@@ -49,6 +49,10 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
                 Text("Ver catálogo 🍰")
             }
         }
+        Button(onClick = { onNavigate("carrito") }) {
+            Text("Ver Carrito ")
+        }
+
     }
 }
 

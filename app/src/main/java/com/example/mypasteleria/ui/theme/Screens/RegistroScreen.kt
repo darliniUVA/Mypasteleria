@@ -48,11 +48,13 @@ fun RegistroScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
             isError = errores.direccionError != null,
             supportingText = { Text(errores.direccionError ?: "") }
         )
-
         Button(onClick = {
             if (viewModel.validarFormulario()) onNavigate("resumen")
         }) {
             Text("Registrar")
+        }
+        Button(onClick = { onNavigate("login") }) {
+            Text("Volver al Login")
         }
     }
 }
