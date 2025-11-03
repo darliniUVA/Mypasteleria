@@ -1,4 +1,4 @@
-package com.example.mypasteleria.Navegation
+package com.example.mypasteleria.Navigation
 
 sealed class AppRoutes(val route: String) {
     object Login : AppRoutes("login")
@@ -6,4 +6,5 @@ sealed class AppRoutes(val route: String) {
     object Home : AppRoutes("home")
     object Catalogo : AppRoutes("catalogo")
     object Perfil : AppRoutes("perfil")
+    object Carrito : AppRoutes("carrito")
 }

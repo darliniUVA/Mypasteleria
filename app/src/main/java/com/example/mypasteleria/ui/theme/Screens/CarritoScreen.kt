@@ -1,29 +1,46 @@
-package com.example.mypasteleria.ViewModel
+package com.example.mypasteleria.ui.theme.Screens
 
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.mypasteleria.ViewModel.CarritoViewModel
 
-import androidx.lifecycle.ViewModel
-import com.example.mypasteleria.Model.Producto
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+@Composable
+fun CarritoScreen(viewModel: CarritoViewModel) {
+    val productos by viewModel.carrito.collectAsState()
+    val total = viewModel.obtenerTotal()
 
-class CarritoViewModel : ViewModel() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text("🛒 Carrito de Compras", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
 
-    private val _carrito = MutableStateFlow<List<Producto>>(emptyList())
-    val carrito: StateFlow<List<Producto>> = _carrito
-
-    fun agregarProducto(producto: Producto) {
-        _carrito.value = _carrito.value + producto
-    }
-
-    fun eliminarProducto(producto: Producto) {
-        _carrito.value = _carrito.value - producto
-    }
-
-    fun obtenerTotal(): Int {
-        return _carrito.value.sumOf { it.precio }
-    }
-
-    fun vaciarCarrito() {
-        _carrito.value = emptyList()
+        if (productos.isEmpty()) {
+            Text("Tu carrito está vacío.")
+        } else {
+            LazyColumn {
+                items(productos) { producto ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
+                            Text("Precio: $${producto.precio}")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Button(onClick = { viewModel.eliminarProducto(producto) }) {
+                                Text("Eliminar")
+                            }
+                        }
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text("Total: $${total} CLP", style = MaterialTheme.typography.titleLarge)
+        }
     }
 }

@@ -6,10 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mypasteleria.Navegation.AppRoutes
-import com.example.mypasteleria.ui.theme.MypasteleriaTheme
+import com.example.mypasteleria.Navigation.AppRoutes
 
 @Composable
 fun LoginScreen(onNavigate: (String) -> Unit) {

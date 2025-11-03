@@ -1,7 +1,7 @@
 package com.example.mypasteleria.ViewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.mypasteleria.Navegation.AppRoutes
+import com.example.mypasteleria.Navigation.AppRoutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
