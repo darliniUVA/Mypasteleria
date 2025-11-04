@@ -8,9 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.mypasteleria.Navigation.AppRoutes
+import com.example.mypasteleria.ViewModel.UsuarioViewModel
 
 @Composable
-fun LoginScreen(onNavigate: (String) -> Unit) {
+fun LoginScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
     var user by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var error by remember { mutableStateOf(false) }
@@ -27,7 +28,7 @@ fun LoginScreen(onNavigate: (String) -> Unit) {
         OutlinedTextField(
             value = user,
             onValueChange = { user = it },
-            label = { Text("Usuario") },
+            label = { Text("Correo electrónico") },
             singleLine = true
         )
         Spacer(modifier = Modifier.height(12.dp))
@@ -40,7 +41,7 @@ fun LoginScreen(onNavigate: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(onClick = {
-            if (user == "admin" && password == "1234") {
+            if (viewModel.validarLogin(user, password)) {
                 onNavigate(AppRoutes.Home.route)
             } else {
                 error = true
@@ -57,6 +58,4 @@ fun LoginScreen(onNavigate: (String) -> Unit) {
             Text("¿No tienes cuenta? Regístrate aquí")
         }
     }
-
-
 }

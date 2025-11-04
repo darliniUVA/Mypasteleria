@@ -5,55 +5,50 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.mypasteleria.Navigation.AppRoutes
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 
 @Composable
 fun RegistroScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
-    val estado by viewModel.uiState.collectAsState()
-    val errores by viewModel.errores.collectAsState()
+    var nombre by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
+    var clave by remember { mutableStateOf("") }
+    var direccion by remember { mutableStateOf("") }
 
     Column(Modifier.padding(16.dp)) {
         OutlinedTextField(
-            value = estado.nombre,
-            onValueChange = { viewModel.actualizarCampo("nombre", it) },
-            label = { Text("Nombre completo") },
-            isError = errores.nombreError != null,
-            supportingText = { Text(errores.nombreError ?: "") }
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre completo") }
         )
         OutlinedTextField(
-            value = estado.correo,
-            onValueChange = { viewModel.actualizarCampo("correo", it) },
-            label = { Text("Correo electrónico") },
-            isError = errores.correoError != null,
-            supportingText = { Text(errores.correoError ?: "") }
+            value = correo,
+            onValueChange = { correo = it },
+            label = { Text("Correo electrónico") }
         )
         OutlinedTextField(
-            value = estado.clave,
-            onValueChange = { viewModel.actualizarCampo("clave", it) },
+            value = clave,
+            onValueChange = { clave = it },
             label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
-            isError = errores.claveError != null,
-            supportingText = { Text(errores.claveError ?: "") }
+            visualTransformation = PasswordVisualTransformation()
         )
         OutlinedTextField(
-            value = estado.direccion,
-            onValueChange = { viewModel.actualizarCampo("direccion", it) },
-            label = { Text("Dirección") },
-            isError = errores.direccionError != null,
-            supportingText = { Text(errores.direccionError ?: "") }
+            value = direccion,
+            onValueChange = { direccion = it },
+            label = { Text("Dirección") }
         )
+
         Button(onClick = {
-            if (viewModel.validarFormulario()) onNavigate("resumen")
-        }) {
-            Text("Registrar")
-        }
-        Button(onClick = { onNavigate("login") }) {
+            viewModel.registrarUsuario(nombre, correo, clave)
+            onNavigate(AppRoutes.Login.route)
+        }) { Text("Registrar") }
+
+
+        Button(onClick = { onNavigate(AppRoutes.Login.route) }) {
             Text("Volver al Login")
         }
     }

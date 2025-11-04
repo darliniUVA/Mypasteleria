@@ -1,38 +1,47 @@
 package com.example.mypasteleria.ViewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.mypasteleria.Model.UsuarioErrores
-import com.example.mypasteleria.Model.UsuarioUiState
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.StateFlow
+
+data class Usuario(
+    val nombre: String,
+    val correo: String,
+    val clave: String,
+    val direccion: String = ""
+)
 
 class UsuarioViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(UsuarioUiState())
-    val uiState = _uiState.asStateFlow()
+    private val _usuarios = MutableStateFlow<List<Usuario>>(emptyList())
+    val usuarios: StateFlow<List<Usuario>> = _usuarios
 
-    private val _errores = MutableStateFlow(UsuarioErrores())
-    val errores = _errores.asStateFlow()
+    private val _usuarioActual = MutableStateFlow<Usuario?>(null)
+    val usuarioActual: StateFlow<Usuario?> = _usuarioActual
 
-    fun actualizarCampo(campo: String, valor: String) {
-        when (campo) {
-            "nombre" -> _uiState.value = _uiState.value.copy(nombre = valor)
-            "correo" -> _uiState.value = _uiState.value.copy(correo = valor)
-            "clave" -> _uiState.value = _uiState.value.copy(clave = valor)
-            "direccion" -> _uiState.value = _uiState.value.copy(direccion = valor)
+    fun registrarUsuario(nombre: String, correo: String, clave: String, direccion: String = "") {
+        val nuevo = Usuario(nombre, correo, clave, direccion)
+        _usuarios.value = _usuarios.value + nuevo
+        _usuarioActual.value = nuevo
+    }
+
+    fun validarLogin(correo: String, clave: String): Boolean {
+        val usuario = _usuarios.value.find { it.correo == correo && it.clave == clave }
+        return if (usuario != null) {
+            _usuarioActual.value = usuario
+            true
+        } else false
+    }
+
+    fun actualizarPerfil(nombre: String, correo: String, direccion: String) {
+        val actual = _usuarioActual.value ?: return
+        val actualizado = actual.copy(nombre = nombre, correo = correo, direccion = direccion)
+        _usuarioActual.value = actualizado
+        _usuarios.value = _usuarios.value.map {
+            if (it.correo == actual.correo) actualizado else it
         }
     }
 
-    fun validarFormulario(): Boolean {
-        val erroresAct = UsuarioErrores(
-            nombreError = if (_uiState.value.nombre.isBlank()) "Campo obligatorio" else null,
-            correoError = if (!Regex("^[A-Za-z0-9+_.-]+@(.+)$").matches(_uiState.value.correo)) "Correo inválido" else null,
-            claveError = if (_uiState.value.clave.length < 6) "Mínimo 6 caracteres" else null,
-            direccionError = if (_uiState.value.direccion.isBlank()) "Campo obligatorio" else null
-        )
-        _errores.value = erroresAct
-        return erroresAct == UsuarioErrores()
-    }
-    fun limpiarUsuario() {
-        _uiState.value = UsuarioUiState()
+    fun cerrarSesion() {
+        _usuarioActual.value = null
     }
 }

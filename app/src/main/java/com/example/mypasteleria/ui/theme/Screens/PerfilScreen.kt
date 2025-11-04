@@ -11,8 +11,11 @@ import com.example.mypasteleria.ViewModel.UsuarioViewModel
 
 @Composable
 fun PerfilScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
-    val estado by viewModel.uiState.collectAsState()
-    var mostrarMensaje by remember { mutableStateOf(false) }
+    val usuario by viewModel.usuarioActual.collectAsState()
+    var nombre by remember { mutableStateOf(usuario?.nombre ?: "") }
+    var correo by remember { mutableStateOf(usuario?.correo ?: "") }
+    var direccion by remember { mutableStateOf(usuario?.direccion ?: "") }
+    var mensaje by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -22,40 +25,28 @@ fun PerfilScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
     ) {
         Text("Mi Perfil", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = estado.nombre,
-            onValueChange = { viewModel.actualizarCampo("nombre", it) },
-            label = { Text("Nombre completo") }
-        )
+        OutlinedTextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = estado.correo,
-            onValueChange = { viewModel.actualizarCampo("correo", it) },
-            label = { Text("Correo electrónico") }
-        )
+        OutlinedTextField(value = correo, onValueChange = { correo = it }, label = { Text("Correo") })
         Spacer(modifier = Modifier.height(8.dp))
-        OutlinedTextField(
-            value = estado.direccion,
-            onValueChange = { viewModel.actualizarCampo("direccion", it) },
-            label = { Text("Dirección") }
-        )
+        OutlinedTextField(value = direccion, onValueChange = { direccion = it }, label = { Text("Dirección") })
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { mostrarMensaje = true }) {
+        Button(onClick = {
+            viewModel.actualizarPerfil(nombre, correo, direccion)
+            mensaje = "Datos actualizados correctamente"
+        }) {
             Text("Actualizar datos")
         }
         Spacer(modifier = Modifier.height(12.dp))
         Button(onClick = {
-            viewModel.limpiarUsuario()
+            viewModel.cerrarSesion()
             onNavigate(AppRoutes.Login.route)
         }) {
             Text("Cerrar sesión")
         }
-        if (mostrarMensaje) {
+        if (mensaje.isNotEmpty()) {
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Datos actualizados correctamente ",
-                color = MaterialTheme.colorScheme.primary
-            )
+            Text(mensaje, color = MaterialTheme.colorScheme.primary)
         }
     }
 }
