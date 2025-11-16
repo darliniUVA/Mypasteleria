@@ -9,4 +9,5 @@ sealed class AppRoutes(val route: String) {
     object Carrito  : AppRoutes("carrito")
     object Resenas  : AppRoutes("resenas")
     object Blog     : AppRoutes("blog")
+    object PostScreen : AppRoutes("post")
 }

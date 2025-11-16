@@ -1,4 +1,5 @@
-package com.example.mypasteleria.Model
+package com.example.mypasteleria.Data.Model
+import android.media.Image
 import kotlinx.serialization.Serializable
 
 

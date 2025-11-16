@@ -1,4 +1,4 @@
-package com.example.mypasteleria.Model
+package com.example.mypasteleria.Data.Model
 
 data class UsuarioUiState(
     val nombre: String = "",

@@ -1,4 +1,4 @@
-package com.example.mypasteleria.Model
+package com.example.mypasteleria.Data.Model
 
 val listaProductos = listOf(
     Producto("TC001", "Tortas Cuadradas", "Torta Cuadrada de Chocolate", "Torta de chocolate con ganache y avellanas.", 45000),

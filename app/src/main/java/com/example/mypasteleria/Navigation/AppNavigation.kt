@@ -6,8 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mypasteleria.ViewModel.CarritoViewModel
+import com.example.mypasteleria.ViewModel.PostViewModel
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 import com.example.mypasteleria.ui.theme.Screens.*
+
 
 @Composable
 fun AppNavigation() {
@@ -64,6 +66,10 @@ fun AppNavigation() {
 
         composable(AppRoutes.Blog.route) {
             BlogScreen { route -> navController.navigate(route) }
+        }
+        composable(AppRoutes.PostScreen.route) {
+            val postViewModel: PostViewModel = viewModel()
+            PostScreen(viewModel = postViewModel)
         }
     }
 }

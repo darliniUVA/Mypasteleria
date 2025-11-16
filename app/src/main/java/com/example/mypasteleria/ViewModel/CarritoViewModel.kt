@@ -1,7 +1,7 @@
 package com.example.mypasteleria.ViewModel
 
 import androidx.lifecycle.ViewModel
-import com.example.mypasteleria.Model.Producto
+import com.example.mypasteleria.Data.Model.Producto
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
