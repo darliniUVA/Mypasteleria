@@ -51,7 +51,7 @@ fun PostScreen (viewModel: PostViewModel){
                     ){
                         Column (modifier = Modifier.padding(16.dp)){
                             Text(
-                                text = "Titulo: ${post.title}",
+                                text = "titulo: ${post.title}",
                                 style = MaterialTheme.typography.titleMedium
                             )
                             Spacer(modifier = Modifier.height(4.dp))

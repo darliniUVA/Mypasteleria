@@ -70,7 +70,6 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
                 .padding(16.dp)
         ) {
             Text(
@@ -83,10 +82,6 @@ fun HomeScreen(
                 "Descubre nuestras tortas, postres y delicias artesanales hechas con amor. ¡Endulza tu día!",
                 fontSize = 16.sp
             )
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = { onNavigate(AppRoutes.Catalogo.route) }) {
-                Text("Explorar catálogo")
-            }
         }
     }
 }
