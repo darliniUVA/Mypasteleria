@@ -1,20 +1,37 @@
-package com.example.mypasteleria.ui.theme.Screens
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.mypasteleria.Navigation.AppRoutes
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 
+
+
 @Composable
-fun LoginScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
-    var user by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf(false) }
+fun LoginScreen(
+    viewModel: UsuarioViewModel,
+    onNavigate: (String) -> Unit
+) {
+    var correoInput by remember { mutableStateOf("") }
+    var claveInput by remember { mutableStateOf("") }
+    var errorMensaje by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -23,38 +40,60 @@ fun LoginScreen(viewModel: UsuarioViewModel, onNavigate: (String) -> Unit) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Iniciar Sesión", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(20.dp))
+
+        Text("Iniciar sesión", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
+
         OutlinedTextField(
-            value = user,
-            onValueChange = { user = it },
+            value = correoInput,
+            onValueChange = {
+                correoInput = it
+                errorMensaje = ""
+            },
             label = { Text("Correo electrónico") },
-            singleLine = true
+            modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(12.dp))
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = claveInput,
+            onValueChange = {
+                claveInput = it
+                errorMensaje = ""
+            },
             label = { Text("Contraseña") },
-            singleLine = true,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {
-            if (viewModel.validarLogin(user, password)) {
-                onNavigate(AppRoutes.Home.route)
-            } else {
-                error = true
-            }
-        }) {
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                val ok = viewModel.validarLogin(correoInput, claveInput)
+                if (ok) {
+                    errorMensaje = ""
+                    onNavigate("home")
+                } else {
+                    errorMensaje = "Usuario o contraseña incorrectos"
+                }
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text("Ingresar")
         }
-        if (error) {
-            Spacer(modifier = Modifier.height(10.dp))
-            Text("Usuario o contraseña incorrectos", color = MaterialTheme.colorScheme.error)
+
+        if (errorMensaje.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(errorMensaje, color = MaterialTheme.colorScheme.error)
         }
-        Spacer(modifier = Modifier.height(10.dp))
-        TextButton(onClick = { onNavigate(AppRoutes.Registro.route) }) {
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextButton(
+            onClick = { onNavigate("registro") }
+        ) {
             Text("¿No tienes cuenta? Regístrate aquí")
         }
     }

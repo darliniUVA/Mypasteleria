@@ -4,8 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-
-
 android {
     namespace = "com.example.mypasteleria"
     compileSdk = 36

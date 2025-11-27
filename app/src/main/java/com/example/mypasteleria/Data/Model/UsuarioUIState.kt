@@ -5,7 +5,9 @@ data class UsuarioUiState(
     val correo: String = "",
     val clave: String = "",
     val direccion: String = ""
-)
+) {
+    companion object
+}
 
 data class UsuarioErrores(
     val nombreError: String? = null,

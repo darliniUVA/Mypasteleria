@@ -1,87 +1,62 @@
 package com.example.mypasteleria.ui.theme.Screens
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.mypasteleria.Navigation.AppRoutes
-import com.example.mypasteleria.ViewModel.CarritoViewModel
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    carritoViewModel: CarritoViewModel,
-    onNavigate: (String) -> Unit
-) {
-    val productosEnCarrito by carritoViewModel.carrito.collectAsState()
-    val mostrarCarrito = productosEnCarrito.isNotEmpty()
-
+fun HomeScreen(onNavigate: (String) -> Unit) {
     Scaffold(
-        topBar = {
-            TopAppBar(title = { Text("🎂 Pastelería Mil Sabores") })
-        },
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
+                    selected = true,
+                    onClick = { onNavigate("home") },
+                    icon = { Icon(Icons.Default.Home, contentDescription = null) },
+                    label = { Text("Home") }
+                )
+                NavigationBarItem(
                     selected = false,
-                    onClick = { onNavigate(AppRoutes.Catalogo.route) },
-                    icon = { Icon(Icons.Filled.Menu, contentDescription = "Catálogo") },
+                    onClick = { onNavigate("catalogo") },
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = null) },
                     label = { Text("Catálogo") }
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = { onNavigate(AppRoutes.Perfil.route) },
-                    icon = { Icon(Icons.Filled.Person, contentDescription = "Perfil") },
+                    onClick = { onNavigate("perfil") },
+                    icon = { Icon(Icons.Default.Person, contentDescription = null) },
                     label = { Text("Perfil") }
                 )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = { onNavigate(AppRoutes.Resenas.route) },
-                    icon = { Icon(Icons.Filled.Star, contentDescription = "Reseñas") },
-                    label = { Text("Reseñas") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = { onNavigate(AppRoutes.Blog.route) },
-                    icon = { Icon(Icons.Filled.Info, contentDescription = "Blog") },
-                    label = { Text("Blog") }
-                )
-                if (mostrarCarrito) {
-                    NavigationBarItem(
-                        selected = false,
-                        onClick = { onNavigate(AppRoutes.Carrito.route) },
-                        icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "Carrito") },
-                        label = { Text("Carrito") }
-                    )
-                }
             }
         }
-    ) { innerPadding ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                "Bienvenido a Pastelería Mil Sabores",
-                fontSize = 24.sp,
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "Descubre nuestras tortas, postres y delicias artesanales hechas con amor. ¡Endulza tu día!",
-                fontSize = 16.sp
-            )
+            Text("Bienvenido a Pastelería Mil Sabores")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Button(onClick = { onNavigate("catalogo") }) {
+                Text("Ver catálogo")
+            }
         }
     }
 }
