@@ -9,15 +9,12 @@ import kotlinx.coroutines.flow.update
 
 class UsuarioViewModel : ViewModel() {
 
-    // Usuario registrado / logueado
     private val _usuarioState = MutableStateFlow(UsuarioUiState())
     val usuarioState = _usuarioState.asStateFlow()
 
-    // Errores de validación del formulario de registro
     private val _erroresState = MutableStateFlow(UsuarioErrores())
     val erroresState = _erroresState.asStateFlow()
 
-    // 🧁 REGISTRO CON VALIDACIÓN
     fun registrarUsuario(
         nombre: String,
         correo: String,
@@ -26,24 +23,38 @@ class UsuarioViewModel : ViewModel() {
     ): Boolean {
 
         val errores = UsuarioErrores(
-            nombreError = if (nombre.isBlank()) "El nombre es obligatorio" else null,
+
+           
+            nombreError = when {
+                nombre.isBlank() -> "El nombre es obligatorio"
+                !Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}$").matches(nombre.trim()) ->
+                    "Solo letras, mínimo 2 caracteres"
+                else -> null
+            },
+
             correoError = when {
                 correo.isBlank() -> "El correo es obligatorio"
                 !correo.trim().endsWith("@gmail.com") -> "Debe ser un correo @gmail.com"
                 else -> null
             },
+
             claveError = when {
                 clave.isBlank() -> "La contraseña es obligatoria"
                 clave.length < 6 -> "Mínimo 6 caracteres"
                 else -> null
             },
-            direccionError = if (direccion.isBlank()) "La dirección es obligatoria" else null
+
+
+            direccionError = when {
+                direccion.isBlank() -> "La dirección es obligatoria"
+                !Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 ]{5,}$").matches(direccion.trim()) ->
+                    "Dirección inválida (mínimo 5 caracteres, solo letras y números)"
+                else -> null
+            }
         )
 
-        // Actualizo los errores para que la UI los muestre
         _erroresState.value = errores
 
-        // ¿Hay algún error?
         val hayErrores = listOf(
             errores.nombreError,
             errores.correoError,
@@ -51,11 +62,9 @@ class UsuarioViewModel : ViewModel() {
             errores.direccionError
         ).any { it != null }
 
-        if (hayErrores) {
-            return false   // ❌ no se registra
-        }
+        if (hayErrores) return false
 
-        // ✅ Datos válidos: guardo usuario
+        // 👉 Guardar usuario para Perfil
         _usuarioState.value = UsuarioUiState(
             nombre = nombre.trim(),
             correo = correo.trim(),
@@ -66,17 +75,14 @@ class UsuarioViewModel : ViewModel() {
         return true
     }
 
-    // 🔐 LOGIN (contra el usuario registrado)
     fun validarLogin(correo: String, clave: String): Boolean {
         val registrado = _usuarioState.value
-
         if (registrado.correo.isBlank() || registrado.clave.isBlank()) return false
 
         return registrado.correo.equals(correo.trim(), ignoreCase = true) &&
                 registrado.clave == clave.trim()
     }
 
-    // ✏️ PERFIL
     fun actualizarPerfil(nombre: String, correo: String, direccion: String) {
         _usuarioState.update { actual ->
             actual.copy(
@@ -87,7 +93,6 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    // 🚪 CERRAR SESIÓN
     fun cerrarSesion() {
         _usuarioState.value = UsuarioUiState()
     }

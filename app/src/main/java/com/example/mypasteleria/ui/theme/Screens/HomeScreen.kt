@@ -29,7 +29,7 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
             TopAppBar(
                 title = { Text("🎂 Pastelería Mil Sabores") },
                 actions = {
-
+                    // Aquí puedes volver a poner tus iconos de redes si quieres
                 }
             )
         },
@@ -46,6 +46,12 @@ fun HomeScreen(onNavigate: (String) -> Unit) {
                     onClick = { onNavigate(AppRoutes.Catalogo.route) },
                     icon = { Icon(Icons.Default.ShoppingCart, contentDescription = null) },
                     label = { Text("Catálogo") }
+                )
+                NavigationBarItem(
+                    selected = false,
+                    onClick = { onNavigate(AppRoutes.Carrito.route) },   // 👈 NUEVO
+                    icon = { Icon(Icons.Default.ShoppingCart, contentDescription = null) },
+                    label = { Text("Carrito") }
                 )
                 NavigationBarItem(
                     selected = false,

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mypasteleria.Data.Model.listaProductos
 import com.example.mypasteleria.ViewModel.CarritoViewModel
+import kotlinx.coroutines.launch   // 👈 IMPORTANTE para el snackbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,11 +97,18 @@ fun DropdownMenuCategoria(seleccionActual: String, onSeleccionar: (String) -> Un
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatalogoScreen(carritoViewModel: CarritoViewModel, onNavigate: (String) -> Unit) {
+fun CatalogoScreen(
+    carritoViewModel: CarritoViewModel,
+    onNavigate: (String) -> Unit
+) {
     var filtro by remember { mutableStateOf("Todos") }
     val productosFiltrados =
         if (filtro == "Todos") listaProductos
         else listaProductos.filter { it.categoria == filtro }
+
+    // 👇 Estado para mostrar el mensaje de “añadido”
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -112,7 +120,8 @@ fun CatalogoScreen(carritoViewModel: CarritoViewModel, onNavigate: (String) -> U
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) } // 👈 HOST DEL SNACKBAR
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -138,7 +147,17 @@ fun CatalogoScreen(carritoViewModel: CarritoViewModel, onNavigate: (String) -> U
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Spacer(modifier = Modifier.height(8.dp))
-                            Button(onClick = { carritoViewModel.agregarProducto(producto) }) {
+                            Button(
+                                onClick = {
+                                    carritoViewModel.agregarProducto(producto)
+                                    // 👇 Mostrar mensaje cuando se agrega
+                                    scope.launch {
+                                        snackbarHostState.showSnackbar(
+                                            message = "Producto añadido al carrito 🛒"
+                                        )
+                                    }
+                                }
+                            ) {
                                 Text("Agregar al carrito 🛒")
                             }
                         }

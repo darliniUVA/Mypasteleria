@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mypasteleria.Navigation.AppRoutes
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 import com.example.mypasteleria.ViewModel.CarritoViewModel
 import com.example.mypasteleria.ui.theme.Screens.HomeScreen
