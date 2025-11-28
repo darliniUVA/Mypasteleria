@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.mypasteleria.Navigation.AppRoutes
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 
 
@@ -99,7 +100,7 @@ fun RegistroScreen(
             onClick = {
                 val ok = viewModel.registrarUsuario(nombre, correo, clave, direccion)
                 if (ok) {
-                    // Registro válido -> ir a login (o home, como quieras)
+
                     onNavigate(AppRoutes.Login.route)
                 }
             },
