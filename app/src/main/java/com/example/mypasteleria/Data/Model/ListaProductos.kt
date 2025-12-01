@@ -4,13 +4,10 @@ import com.example.mypasteleria.R
 
 val listaProductos = listOf(
 
-    // ------------------------
-    // TORTAS CUADRADAS
-    // ------------------------
     Producto(
         "TC001",
         "Tortas Cuadradas",
-        "Torta Cuadrada de Chocolate",
+        "Torta de Chocolate",
         "Torta de chocolate con ganache y avellanas.",
         45000,
         R.drawable.torta_chocolate
@@ -18,7 +15,7 @@ val listaProductos = listOf(
     Producto(
         "TC002",
         "Tortas Cuadradas",
-        "Torta Cuadrada de Frutas",
+        "Torta de Frutas",
         "Bizcocho con frutas frescas y crema chantilly.",
         50000,
         R.drawable.torta_fruta
@@ -26,19 +23,16 @@ val listaProductos = listOf(
     Producto(
         "TC003",
         "Tortas Cuadradas",
-        "Torta Cuadrada Especial",
+        "Torta Especial",
         "Diseño personalizado para eventos especiales.",
         52000,
         R.drawable.torta_especial
     ),
 
-    // ------------------------
-    // TORTAS CIRCULARES
-    // ------------------------
     Producto(
         "TT001",
         "Tortas Circulares",
-        "Torta Circular de Vainilla",
+        "Torta de Vainilla",
         "Bizcocho de vainilla con crema pastelera.",
         40000,
         R.drawable.torta_de_vainilla
@@ -46,7 +40,7 @@ val listaProductos = listOf(
     Producto(
         "TT002",
         "Tortas Circulares",
-        "Torta Circular de Manjar",
+        "Torta de Manjar",
         "Torta tradicional chilena con manjar.",
         42000,
         R.drawable.torta_manjar
@@ -54,7 +48,7 @@ val listaProductos = listOf(
     Producto(
         "TT003",
         "Tortas Circulares",
-        "Torta Circular de Boda",
+        "Torta de Boda",
         "Elegante torta de varios pisos ideal para matrimonios.",
         90000,
         R.drawable.torta_boda
@@ -68,9 +62,6 @@ val listaProductos = listOf(
         R.drawable.tarta_de_santiago
     ),
 
-    // ------------------------
-    // POSTRES INDIVIDUALES
-    // ------------------------
     Producto(
         "PI001",
         "Postres Individuales",
@@ -104,9 +95,6 @@ val listaProductos = listOf(
         R.drawable.cheese_cake
     ),
 
-    // ------------------------
-    // SIN AZÚCAR
-    // ------------------------
     Producto(
         "PSA001",
         "Sin Azúcar",
@@ -124,9 +112,6 @@ val listaProductos = listOf(
         R.drawable.galletas_avena_veganas
     ),
 
-    // ------------------------
-    // SIN GLUTEN
-    // ------------------------
     Producto(
         "PG001",
         "Sin Gluten",
@@ -144,9 +129,6 @@ val listaProductos = listOf(
         R.drawable.pan_sin_gluten
     ),
 
-    // ------------------------
-    // VEGANOS
-    // ------------------------
     Producto(
         "PV001",
         "Veganos",
