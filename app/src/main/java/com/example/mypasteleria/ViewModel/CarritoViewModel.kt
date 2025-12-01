@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class CarritoViewModel : ViewModel() {
+
     private val _carrito = MutableStateFlow<List<Producto>>(emptyList())
     val carrito: StateFlow<List<Producto>> = _carrito
 
@@ -19,9 +20,5 @@ class CarritoViewModel : ViewModel() {
 
     fun obtenerTotal(): Int {
         return _carrito.value.sumOf { it.precio }
-    }
-
-    fun vaciarCarrito() {
-        _carrito.value = emptyList()
     }
 }

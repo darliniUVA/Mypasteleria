@@ -1,72 +1,143 @@
-package com.example.mypasteleria.ui.theme.Screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mypasteleria.Data.Model.listaProductos
 import com.example.mypasteleria.ViewModel.CarritoViewModel
-import kotlinx.coroutines.launch   // 👈 IMPORTANTE para el snackbar
+import kotlinx.coroutines.launch
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CarritoScreen(viewModel: CarritoViewModel, onNavigate: (String) -> Unit) {
-    val productos by viewModel.carrito.collectAsState()
-    val total = viewModel.obtenerTotal()
+fun CatalogoScreen(
+    carritoViewModel: CarritoViewModel,
+    onNavigate: (String) -> Unit
+) {
+    var filtro by remember { mutableStateOf("Todos") }
+
+    val productosFiltrados =
+        if (filtro == "Todos") listaProductos
+        else listaProductos.filter { it.categoria == filtro }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Carrito de Compras") },
+                title = { Text("Catálogo de Productos") },
                 navigationIcon = {
                     IconButton(onClick = { onNavigate("home") }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.Filled.ArrowBack, contentDescription = null)
                     }
                 }
             )
-        }
-    ) { innerPadding ->
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { paddingValues ->
+
         Column(
-            Modifier
-                .padding(innerPadding)
+            modifier = Modifier
+                .padding(paddingValues)
                 .padding(16.dp)
         ) {
-            if (productos.isEmpty()) {
-                Text("Tu carrito está vacío.")
-            } else {
-                LazyColumn {
-                    items(productos) { producto ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp)
-                        ) {
-                            Column(modifier = Modifier.padding(12.dp)) {
-                                Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
-                                Text("Precio: $${producto.precio}")
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Button(onClick = { viewModel.eliminarProducto(producto) }) {
-                                    Text("Eliminar")
+
+            DropdownMenuCategoria(filtro) { filtro = it }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LazyColumn {
+                items(productosFiltrados) { producto ->
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        elevation = CardDefaults.cardElevation(6.dp)
+                    ) {
+
+                        Column(modifier = Modifier.padding(16.dp)) {
+
+                            Image(
+                                painter = painterResource(id = producto.image),
+                                contentDescription = producto.nombre,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(180.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
+                            Text(producto.descripcion)
+                            Text("Precio: $${producto.precio}")
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            Button(
+                                onClick = {
+                                    carritoViewModel.agregarProducto(producto)
+
+                                    scope.launch {
+                                        val res = snackbarHostState.showSnackbar(
+                                            message = "Producto añadido",
+                                            actionLabel = "Ir al carrito"
+                                        )
+                                        if (res == SnackbarResult.ActionPerformed) {
+                                            onNavigate("carrito")
+                                        }
+                                    }
                                 }
+                            ) {
+                                Text("Agregar al carrito")
                             }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text("Total: $${total} CLP", style = MaterialTheme.typography.titleLarge)
             }
         }
     }
 }
 
 @Composable
-fun DropdownMenuCategoria(seleccionActual: String, onSeleccionar: (String) -> Unit) {
+fun DropdownMenuCategoria(
+    seleccionActual: String,
+    onSeleccionar: (String) -> Unit
+) {
     var expandido by remember { mutableStateOf(false) }
+
     val categorias = listOf(
         "Todos",
         "Tortas Cuadradas",
@@ -81,7 +152,11 @@ fun DropdownMenuCategoria(seleccionActual: String, onSeleccionar: (String) -> Un
         Button(onClick = { expandido = true }) {
             Text("Categoría: $seleccionActual")
         }
-        DropdownMenu(expanded = expandido, onDismissRequest = { expandido = false }) {
+
+        DropdownMenu(
+            expanded = expandido,
+            onDismissRequest = { expandido = false }
+        ) {
             categorias.forEach { categoria ->
                 DropdownMenuItem(
                     text = { Text(categoria) },
@@ -90,79 +165,6 @@ fun DropdownMenuCategoria(seleccionActual: String, onSeleccionar: (String) -> Un
                         expandido = false
                     }
                 )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CatalogoScreen(
-    carritoViewModel: CarritoViewModel,
-    onNavigate: (String) -> Unit
-) {
-    var filtro by remember { mutableStateOf("Todos") }
-    val productosFiltrados =
-        if (filtro == "Todos") listaProductos
-        else listaProductos.filter { it.categoria == filtro }
-
-    // 👇 Estado para mostrar el mensaje de “añadido”
-    val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Catálogo de Productos") },
-                navigationIcon = {
-                    IconButton(onClick = { onNavigate("home") }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
-                    }
-                }
-            )
-        },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) } // 👈 HOST DEL SNACKBAR
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp)
-        ) {
-            DropdownMenuCategoria(filtro) { filtro = it }
-            Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn {
-                items(productosFiltrados) { producto ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 6.dp),
-                        elevation = CardDefaults.cardElevation(4.dp)
-                    ) {
-                        Column(modifier = Modifier.padding(16.dp)) {
-                            Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
-                            Text(producto.categoria, style = MaterialTheme.typography.labelMedium)
-                            Text(producto.descripcion)
-                            Text(
-                                "Precio: $${producto.precio} CLP",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Button(
-                                onClick = {
-                                    carritoViewModel.agregarProducto(producto)
-                                    // 👇 Mostrar mensaje cuando se agrega
-                                    scope.launch {
-                                        snackbarHostState.showSnackbar(
-                                            message = "Producto añadido al carrito 🛒"
-                                        )
-                                    }
-                                }
-                            ) {
-                                Text("Agregar al carrito 🛒")
-                            }
-                        }
-                    }
-                }
             }
         }
     }
