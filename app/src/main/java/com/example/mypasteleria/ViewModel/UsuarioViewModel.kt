@@ -107,7 +107,7 @@ class UsuarioViewModel : ViewModel() {
                 _loginBackendState.value = state
                 onResult(state)
             } catch (e: Exception) {
-                val state = LoginBackendState(false, "Error al iniciar sesión", null)
+                val state = LoginBackendState(false, "Error iniciar sesión", null)
                 _loginBackendState.value = state
                 onResult(state)
             }
