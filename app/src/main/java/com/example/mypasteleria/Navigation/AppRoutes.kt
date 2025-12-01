@@ -1,10 +1,10 @@
 package com.example.mypasteleria.Navigation
 
-sealed class AppRoutes(val route: String) {
-    object Login : AppRoutes("login")
-    object Registro : AppRoutes("registro")
-    object Home : AppRoutes("home")
-    object Catalogo : AppRoutes("catalogo")
-    object Carrito : AppRoutes("carrito")
-    object Perfil : AppRoutes("perfil")
+enum class AppRoutes(val route: String) {
+    Login("login"),
+    Registro("registro"),
+    Home("home"),
+    Catalogo("catalogo"),
+    Carrito("carrito"),
+    Perfil("perfil")
 }

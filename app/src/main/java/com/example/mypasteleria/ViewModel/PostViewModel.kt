@@ -17,11 +17,8 @@ open class PostViewModel(
         MutableStateFlow<List<Post>>(emptyList())
     open val postList: StateFlow<List<Post>> = _postList
     init { fetchPosts() }
-    open fun fetchPosts() {
-        viewModelScope.launch(dispatcher) {
-            try {
-                _postList.value = repository.getPosts()
-            } catch (e: Exception) { }
-        }
+
+    private fun fetchPosts() {
+        TODO("Not yet implemented")
     }
 }

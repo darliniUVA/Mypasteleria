@@ -10,17 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.mypasteleria.R
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import com.example.mypasteleria.Navigation.AppRoutes
+import com.example.mypasteleria.ViewModel.CarritoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(onNavigate: (String) -> Unit) {
+fun HomeScreen(onNavigate: (String) -> Unit, carritoViewModel: CarritoViewModel) {
 
     val context = LocalContext.current
 
