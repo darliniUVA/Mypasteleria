@@ -1,5 +1,6 @@
 package com.example.mypasteleria.Navigation
 
+import CatalogoScreen
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -7,12 +8,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
 import com.example.mypasteleria.ViewModel.CarritoViewModel
-import com.example.mypasteleria.ui.theme.Screens.CarritoScreen
-import com.example.mypasteleria.ui.theme.Screens.CatalogoScreen
+
 import com.example.mypasteleria.ui.theme.Screens.HomeScreen
 import com.example.mypasteleria.ui.theme.Screens.LoginScreen
 import com.example.mypasteleria.ui.theme.Screens.RegistroScreen
 import com.example.mypasteleria.ui.theme.Screens.PerfilScreen
+import com.example.mypasteleria.ui.theme.screens.CarritoScreen.CarritoScreen
 
 @Composable
 fun AppNavigation() {

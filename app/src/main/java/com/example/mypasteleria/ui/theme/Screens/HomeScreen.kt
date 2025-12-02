@@ -1,5 +1,6 @@
 package com.example.mypasteleria.ui.theme.Screens
 
+import ProductosDestacados
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -67,6 +68,7 @@ fun HomeScreen(onNavigate: (String) -> Unit, carritoViewModel: CarritoViewModel)
             Button(onClick = { onNavigate(AppRoutes.Catalogo.route) }) {
                 Text("Ver catálogo")
             }
+            ProductosDestacados()
         }
     }
 }
