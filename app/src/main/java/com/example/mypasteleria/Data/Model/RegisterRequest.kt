@@ -1,6 +1,6 @@
 package com.example.mypasteleria.Data.Model
 
-data class LoginResponse(
+data class RegisterRequest(
     val username: String,
-    val token: String
+    val password: String
 )

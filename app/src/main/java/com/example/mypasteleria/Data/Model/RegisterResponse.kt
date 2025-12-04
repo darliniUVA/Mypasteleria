@@ -1,5 +1,5 @@
 package com.example.mypasteleria.Data.Model
 
-data class RegisterResponse (
+data class RegisterResponse(
     val message: String
 )

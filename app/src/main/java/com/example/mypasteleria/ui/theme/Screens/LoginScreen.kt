@@ -9,7 +9,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.mypasteleria.Navigation.AppRoutes
 import com.example.mypasteleria.ViewModel.UsuarioViewModel
-import com.example.mypasteleria.ViewModel.LoginBackendState
 
 @Composable
 fun LoginScreen(
@@ -32,12 +31,13 @@ fun LoginScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
+
             Text("Iniciar sesión", style = MaterialTheme.typography.titleLarge)
 
             OutlinedTextField(
                 value = correo,
                 onValueChange = { correo = it },
-                label = { Text("Correo / Usuario") },
+                label = { Text("Usuario / Correo") },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -52,7 +52,10 @@ fun LoginScreen(
             )
 
             if (mensajeError != null) {
-                Text(mensajeError!!, color = MaterialTheme.colorScheme.error)
+                Text(
+                    mensajeError!!,
+                    color = MaterialTheme.colorScheme.error
+                )
             }
 
             Button(
@@ -60,12 +63,15 @@ fun LoginScreen(
                     mensajeError = null
                     loading = true
 
-                    viewModel.loginConBackend(correo, clave) { estado: LoginBackendState ->
-                        loading = estado.loading
-                        if (estado.error != null) {
-                            mensajeError = estado.error
-                        } else if (estado.response != null) {
+                    viewModel.loginConBackend(
+                        correo = correo,
+                        clave = clave
+                    ) { ok, response ->
+                        loading = false
+                        if (ok && response != null) {
                             onNavigate(AppRoutes.Home.route)
+                        } else {
+                            mensajeError = "Error al iniciar sesión"
                         }
                     }
                 },
@@ -75,7 +81,9 @@ fun LoginScreen(
                 if (loading) {
                     CircularProgressIndicator(
                         strokeWidth = 2.dp,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier
+                            .padding(2.dp)
+                            .size(20.dp)
                     )
                 } else {
                     Text("Iniciar sesión")

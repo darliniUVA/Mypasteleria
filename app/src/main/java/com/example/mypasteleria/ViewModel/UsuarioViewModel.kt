@@ -2,10 +2,7 @@ package com.example.mypasteleria.ViewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mypasteleria.Data.Model.UsuarioUiState
-import com.example.mypasteleria.Data.Model.UsuarioErrores
-import com.example.mypasteleria.Data.Model.LoginRequest
-import com.example.mypasteleria.Data.Model.LoginResponse
+import com.example.mypasteleria.Data.Model.*
 import com.example.mypasteleria.Data.Remote.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,16 +17,12 @@ class UsuarioViewModel : ViewModel() {
     private val _erroresState = MutableStateFlow(UsuarioErrores())
     val erroresState = _erroresState.asStateFlow()
 
-    private val _loginBackendState = MutableStateFlow<LoginBackendState?>(null)
-    val loginBackendState = _loginBackendState.asStateFlow()
-
-    fun registrarUsuario(
+    fun registrarUsuarioLocal(
         nombre: String,
         correo: String,
         clave: String,
         direccion: String
     ): Boolean {
-
         val errores = UsuarioErrores(
             nombreError = when {
                 nombre.isBlank() -> "El nombre es obligatorio"
@@ -64,99 +57,16 @@ class UsuarioViewModel : ViewModel() {
             errores.direccionError
         ).any { it != null }
 
-        if (!hayErrores) {
-            _usuarioState.value = UsuarioUiState(
-                nombre = nombre.trim(),
-                correo = correo.trim(),
-                clave = clave.trim(),
-                direccion = direccion.trim()
-            )
-        }
+        if (hayErrores) return false
 
-        return !hayErrores
-    }
-
-    fun registrarUsuarioEnBackend(
-        nombre: String,
-        correo: String,
-        clave: String,
-        direccion: String,
-        onResult: (LoginBackendState) -> Unit
-    ) {
-        val esValido = registrarUsuario(nombre, correo, clave, direccion)
-        if (!esValido) return
-
-        val request = LoginRequest(
-            username = correo.trim(),
-            password = clave.trim()
+        _usuarioState.value = UsuarioUiState(
+            nombre = nombre.trim(),
+            correo = correo.trim(),
+            clave = clave.trim(),
+            direccion = direccion.trim()
         )
 
-        _loginBackendState.value = LoginBackendState(
-            loading = true,
-            error = null,
-            response = null
-        )
-        onResult(_loginBackendState.value!!)
-
-        viewModelScope.launch {
-            try {
-                RetrofitInstance.api.register(request)
-                val state = LoginBackendState(
-                    loading = false,
-                    error = null,
-                    response = null
-                )
-                _loginBackendState.value = state
-                onResult(state)
-            } catch (e: Exception) {
-                val state = LoginBackendState(
-                    loading = false,
-                    error = "Error al registrar usuario",
-                    response = null
-                )
-                _loginBackendState.value = state
-                onResult(state)
-            }
-        }
-    }
-
-    fun loginConBackend(
-        correo: String,
-        clave: String,
-        onResult: (LoginBackendState) -> Unit
-    ) {
-        val request = LoginRequest(
-            username = correo.trim(),
-            password = clave.trim()
-        )
-
-        _loginBackendState.value = LoginBackendState(
-            loading = true,
-            error = null,
-            response = null
-        )
-        onResult(_loginBackendState.value!!)
-
-        viewModelScope.launch {
-            try {
-                val response: LoginResponse = RetrofitInstance.api.login(request)
-                val state = LoginBackendState(
-                    loading = false,
-                    error = null,
-                    response = response
-                )
-                _loginBackendState.value = state
-                onResult(state)
-            } catch (e: Exception) {
-                val state = LoginBackendState(
-                    loading = false,
-                    error = "Error al iniciar sesión",
-                    response = null
-                )
-                _loginBackendState.value = state
-                onResult(state)
-            }
-        }
+        return true
     }
 
     fun actualizarPerfil(nombre: String, correo: String, direccion: String) {
@@ -172,10 +82,42 @@ class UsuarioViewModel : ViewModel() {
     fun cerrarSesion() {
         _usuarioState.value = UsuarioUiState()
     }
-}
 
-data class LoginBackendState(
-    val loading: Boolean,
-    val error: String?,
-    val response: LoginResponse?
-)
+    fun registrarEnBackend(
+        correo: String,
+        clave: String,
+        onResult: (Boolean, String?) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val req = RegisterRequest(
+                    username = correo.trim(),
+                    password = clave.trim()
+                )
+                val res = RetrofitInstance.api.register(req)
+                onResult(true, res.message)
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
+    }
+
+    fun loginConBackend(
+        correo: String,
+        clave: String,
+        onResult: (Boolean, LoginResponse?) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val req = LoginRequest(
+                    username = correo.trim(),
+                    password = clave.trim()
+                )
+                val res = RetrofitInstance.api.login(req)
+                onResult(true, res)
+            } catch (e: Exception) {
+                onResult(false, null)
+            }
+        }
+    }
+}

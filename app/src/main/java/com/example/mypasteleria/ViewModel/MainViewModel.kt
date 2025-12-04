@@ -11,15 +11,12 @@ data class UiState(
 
 class MainViewModel : ViewModel() {
 
-    // Lista de usuarios registrados (en memoria)
     private val _usuarios = MutableStateFlow<List<UsuarioUiState>>(emptyList())
     val usuarios = _usuarios.asStateFlow()
 
-    // Estado global
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
-    // 🧁 REGISTRO
     fun registrarUsuario(nombre: String, correo: String, clave: String, direccion: String = "") {
 
         val nuevo = UsuarioUiState(
@@ -36,7 +33,6 @@ class MainViewModel : ViewModel() {
         _uiState.value = UiState(usuarioActual = nuevo)
     }
 
-    // 🔐 LOGIN
     fun validarLogin(correo: String, clave: String): Boolean {
         val email = correo.trim()
         val pass = clave.trim()

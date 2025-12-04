@@ -130,17 +130,30 @@ fun RegistroScreen(
             Button(
                 onClick = {
                     mensajeError = null
-                    viewModel.registrarUsuarioEnBackend(
+
+                    val valido = viewModel.registrarUsuarioLocal(
                         nombre = nombre,
                         correo = correo,
                         clave = clave,
                         direccion = direccion
-                    ) { estado ->
-                        loading = estado.loading
-                        if (estado.error != null) {
-                            mensajeError = estado.error
-                        } else if (!estado.loading) {
+                    )
+
+                    if (!valido) {
+                        mensajeError = "Corrige los campos marcados"
+                        return@Button
+                    }
+
+                    loading = true
+
+                    viewModel.registrarEnBackend(
+                        correo = correo,
+                        clave = clave
+                    ) { ok, msg ->
+                        loading = false
+                        if (ok) {
                             onNavigate(AppRoutes.Login.route)
+                        } else {
+                            mensajeError = msg ?: "Error al registrar"
                         }
                     }
                 },
