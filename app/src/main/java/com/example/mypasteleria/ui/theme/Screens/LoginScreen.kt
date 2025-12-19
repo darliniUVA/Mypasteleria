@@ -63,16 +63,17 @@ fun LoginScreen(
                     mensajeError = null
                     loading = true
 
-                    viewModel.loginConBackend(
+                    val ok = viewModel.loginConBackend(
                         correo = correo,
                         clave = clave
-                    ) { ok, response ->
-                        loading = false
-                        if (ok && response != null) {
-                            onNavigate(AppRoutes.Home.route)
-                        } else {
-                            mensajeError = "Error al iniciar sesión"
-                        }
+                    )
+
+                    loading = false
+
+                    if (ok) {
+                        onNavigate(AppRoutes.Home.route)
+                    } else {
+                        mensajeError = "Error al iniciar sesión"
                     }
                 },
                 enabled = !loading,

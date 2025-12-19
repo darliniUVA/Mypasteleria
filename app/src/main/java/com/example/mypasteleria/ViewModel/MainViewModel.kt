@@ -17,32 +17,47 @@ class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
-    fun registrarUsuario(nombre: String, correo: String, clave: String, direccion: String = "") {
+    fun registrarUsuario(
+        nombre: String,
+        correo: String,
+        clave: String,
+        direccion: String = ""
+    ): Boolean {
+
+        val email = correo.trim().lowercase()
+        val pass = clave.trim()
+
+        if (_usuarios.value.any { it.correo.equals(email, ignoreCase = true) }) {
+            return false
+        }
 
         val nuevo = UsuarioUiState(
             nombre = nombre.trim(),
-            correo = correo.trim(),
-            clave = clave.trim(),
+            correo = email,
+            clave = pass,
             direccion = direccion.trim()
         )
 
-        // Agrego el nuevo usuario a la lista
         _usuarios.value = _usuarios.value + nuevo
-
-        // Lo dejo como usuario actual
         _uiState.value = UiState(usuarioActual = nuevo)
+
+        return true
     }
 
     fun validarLogin(correo: String, clave: String): Boolean {
-        val email = correo.trim()
+        val email = correo.trim().lowercase()
         val pass = clave.trim()
 
-        val usuarioEncontrado = _usuarios.value.find {
-            it.correo.equals(email, ignoreCase = true) && it.clave == pass
+        val usuario = _usuarios.value.firstOrNull {
+            it.correo == email && it.clave == pass
         }
 
-        _uiState.value = UiState(usuarioActual = usuarioEncontrado)
+        _uiState.value = UiState(usuarioActual = usuario)
 
-        return usuarioEncontrado != null
+        return usuario != null
+    }
+
+    fun cerrarSesion() {
+        _uiState.value = UiState(usuarioActual = null)
     }
 }
