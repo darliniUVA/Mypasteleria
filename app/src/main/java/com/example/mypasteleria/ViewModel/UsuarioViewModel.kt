@@ -28,6 +28,7 @@ class UsuarioViewModel : ViewModel() {
                 nombre.isBlank() -> "El nombre es obligatorio"
                 !Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,}$").matches(nombre.trim()) ->
                     "Solo letras, mínimo 2 caracteres"
+
                 else -> null
             },
             correoError = when {
@@ -44,6 +45,7 @@ class UsuarioViewModel : ViewModel() {
                 direccion.isBlank() -> "La dirección es obligatoria"
                 !Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9 ]{5,}$").matches(direccion.trim()) ->
                     "Dirección inválida"
+
                 else -> null
             }
         )
@@ -102,22 +104,12 @@ class UsuarioViewModel : ViewModel() {
         }
     }
 
-    fun loginConBackend(
-        correo: String,
-        clave: String,
-        onResult: (Boolean, LoginResponse?) -> Unit
-    ) {
-        viewModelScope.launch {
-            try {
-                val req = LoginRequest(
-                    username = correo.trim(),
-                    password = clave.trim()
-                )
-                val res = RetrofitInstance.api.login(req)
-                onResult(true, res)
-            } catch (e: Exception) {
-                onResult(false, null)
-            }
-        }
+    fun loginConBackend(correo: String, clave: String): Boolean {
+        val email = correo.trim()
+        val pass = clave.trim()
+
+        val usuarioActual = _usuarioState.value
+
+        return usuarioActual.correo == email && usuarioActual.clave == pass
     }
 }

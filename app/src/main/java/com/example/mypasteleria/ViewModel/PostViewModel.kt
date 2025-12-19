@@ -18,7 +18,7 @@ open class PostViewModel(
     open val postList: StateFlow<List<Post>> = _postList
     init { fetchPosts() }
 
-    private fun fetchPosts() {
+    fun fetchPosts() {
         TODO("Not yet implemented")
     }
 }

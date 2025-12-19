@@ -2,6 +2,7 @@ package com.example.mypasteleria.Data.Remote
 
 import com.example.mypasteleria.Data.Model.LoginRequest
 import com.example.mypasteleria.Data.Model.LoginResponse
+import com.example.mypasteleria.Data.Model.Post
 import com.example.mypasteleria.Data.Model.RegisterRequest
 import com.example.mypasteleria.Data.Model.RegisterResponse
 import retrofit2.http.Body
@@ -14,4 +15,5 @@ interface ApiService {
 
     @POST("/auth/register")
     suspend fun register(@Body request: RegisterRequest): RegisterResponse
+    fun getPosts(): List<Post>
 }
