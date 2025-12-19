@@ -10,10 +10,17 @@ class CarritoViewModel : ViewModel() {
     private val _carrito = MutableStateFlow<List<Producto>>(emptyList())
     val carrito: StateFlow<List<Producto>> = _carrito
 
-    fun agregarProducto(producto: Producto) {
+    fun agregarProducto(producto: Producto): Boolean {
+        val existente = _carrito.value.find { it.codigo == producto.codigo }
+        if (existente != null) {
+            val cantidadActual = _carrito.value.count { it.codigo == producto.codigo }
+            if (cantidadActual >= producto.stock) {
+                return false
+            }
+        }
         _carrito.value = _carrito.value + producto
+        return true
     }
-
     fun eliminarProducto(producto: Producto) {
         _carrito.value = _carrito.value - producto
     }

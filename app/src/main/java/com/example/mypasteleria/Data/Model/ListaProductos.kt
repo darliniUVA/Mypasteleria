@@ -10,7 +10,8 @@ val listaProductos = listOf(
         "Torta de Chocolate",
         "Torta de chocolate con ganache y avellanas.",
         45000,
-        R.drawable.torta_chocolate
+        R.drawable.torta_chocolate,
+         2
     ),
     Producto(
         "TC002",
@@ -18,7 +19,8 @@ val listaProductos = listOf(
         "Torta de Frutas",
         "Bizcocho con frutas frescas y crema chantilly.",
         50000,
-        R.drawable.torta_fruta
+        R.drawable.torta_fruta,
+       1
     ),
     Producto(
         "TC003",
@@ -26,7 +28,8 @@ val listaProductos = listOf(
         "Torta Especial",
         "Diseño personalizado para eventos especiales.",
         52000,
-        R.drawable.torta_especial
+        R.drawable.torta_especial,
+         5
     ),
 
     Producto(
@@ -35,7 +38,8 @@ val listaProductos = listOf(
         "Torta de Vainilla",
         "Bizcocho de vainilla con crema pastelera.",
         40000,
-        R.drawable.torta_de_vainilla
+        R.drawable.torta_de_vainilla,
+        1
     ),
     Producto(
         "TT002",
@@ -43,7 +47,8 @@ val listaProductos = listOf(
         "Torta de Manjar",
         "Torta tradicional chilena con manjar.",
         42000,
-        R.drawable.torta_manjar
+        R.drawable.torta_manjar,
+         7
     ),
     Producto(
         "TT003",
@@ -51,7 +56,8 @@ val listaProductos = listOf(
         "Torta de Boda",
         "Elegante torta de varios pisos ideal para matrimonios.",
         90000,
-        R.drawable.torta_boda
+        R.drawable.torta_boda,
+        3
     ),
     Producto(
         "TT004",
@@ -59,7 +65,8 @@ val listaProductos = listOf(
         "Tarta de Santiago",
         "Clásica tarta gallega con almendras.",
         38000,
-        R.drawable.tarta_de_santiago
+        R.drawable.tarta_de_santiago,
+        stock = 6
     ),
 
     Producto(
@@ -68,7 +75,8 @@ val listaProductos = listOf(
         "Mousse de Chocolate",
         "Postre individual cremoso de chocolate.",
         5000,
-        R.drawable.mousse_chocolate
+        R.drawable.mousse_chocolate,
+         8
     ),
     Producto(
         "PI002",
@@ -76,7 +84,8 @@ val listaProductos = listOf(
         "Tiramisú Clásico",
         "Postre italiano con café, mascarpone y cacao.",
         5500,
-        R.drawable.tiramisu_clasico
+        R.drawable.tiramisu_clasico,
+        4
     ),
     Producto(
         "PI003",
@@ -84,7 +93,8 @@ val listaProductos = listOf(
         "Empanadas de Manzana",
         "Empanaditas dulces rellenas de manzana natural.",
         3000,
-        R.drawable.empanadas_manzana
+        R.drawable.empanadas_manzana,
+        2
     ),
     Producto(
         "PI004",
@@ -92,7 +102,8 @@ val listaProductos = listOf(
         "Cheesecake Individual",
         "Porción individual del clásico cheesecake cremoso.",
         3500,
-        R.drawable.cheese_cake
+        R.drawable.cheese_cake,
+        2
     ),
 
     Producto(
@@ -101,7 +112,8 @@ val listaProductos = listOf(
         "Torta Sin Azúcar de Naranja",
         "Torta ligera endulzada naturalmente.",
         48000,
-        R.drawable.torta_sin_azucar_de_naranja
+        R.drawable.torta_sin_azucar_de_naranja,
+        3
     ),
     Producto(
         "PSA002",
@@ -109,7 +121,8 @@ val listaProductos = listOf(
         "Galletas Sin Azúcar",
         "Galletas de avena sin adición de azúcar.",
         3000,
-        R.drawable.galletas_avena_veganas
+        R.drawable.galletas_avena_veganas,
+        4
     ),
 
     Producto(
@@ -118,7 +131,8 @@ val listaProductos = listOf(
         "Brownie Sin Gluten",
         "Brownie delicioso sin gluten ni harina.",
         4000,
-        R.drawable.brownies_sin_gluten
+        R.drawable.brownies_sin_gluten,
+        6
     ),
     Producto(
         "PG002",
@@ -126,7 +140,8 @@ val listaProductos = listOf(
         "Pan Sin Gluten",
         "Pan artesanal sin gluten.",
         2500,
-        R.drawable.pan_sin_gluten
+        R.drawable.pan_sin_gluten,
+        7
     ),
 
     Producto(
@@ -135,7 +150,8 @@ val listaProductos = listOf(
         "Torta Vegana de Chocolate",
         "Torta húmeda sin productos animales.",
         50000,
-        R.drawable.torta_vegana_chocolate_arandanos
+        R.drawable.torta_vegana_chocolate_arandanos,
+        5
     ),
     Producto(
         "PV002",
@@ -143,6 +159,7 @@ val listaProductos = listOf(
         "Galletas Veganas de Avena",
         "Galletas sin lácteos y sin huevo.",
         2500,
-        R.drawable.galletas_avena_veganas
+        R.drawable.galletas_avena_veganas,
+        3
     )
 )

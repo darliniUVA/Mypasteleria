@@ -103,6 +103,7 @@ fun CatalogoScreen(
                             Text(producto.nombre, style = MaterialTheme.typography.titleLarge)
                             Text(producto.descripcion)
                             Text("Precio: $${producto.precio}")
+                            Text(text = "Stock: ${producto.stock}")
 
                             Spacer(modifier = Modifier.height(12.dp))
 
